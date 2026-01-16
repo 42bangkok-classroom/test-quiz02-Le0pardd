@@ -62,7 +62,7 @@ export async function addUser(
       ? result[result.length - 1].id
       : 0;
 
-    const address: Address | null = newUserData.address
+    const address: Address | null | undefined = newUserData.address
       ? {
           street: newUserData.address.street ?? null,
           suite: newUserData.address.suite ?? null,
