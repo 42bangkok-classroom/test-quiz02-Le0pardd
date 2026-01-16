@@ -1,4 +1,27 @@
 import axios from "axios";
+type newUser = {
+  name: string;
+  username?: string;
+  email?: string;
+  address?: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  } | null;
+  phone: string;
+  website?: string;
+  company?: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+};
+//export function addUser(newUser: newUser | null) {}
 
 
 interface Geo {
@@ -23,6 +46,8 @@ interface User {
 
 interface NewUser {
   name?: string;
+  username?: string;
+  email?: string;
   phone?: string;
   address?: {
     street?: string;
@@ -33,25 +58,23 @@ interface NewUser {
       lat?: string;
       lng?: string;
     };
-  };
+  } | null;
 }
-
-/* ===== Function ===== */
 
 const API_URL = "https://jsonplaceholder.typicode.com/users";
 
 export async function addUser(
-  newUserData: NewUser | null
+  newUserData: newUser | null
 ): Promise<User[]> {
   try {
     const response = await axios.get<User[]>(API_URL);
     const users = response.data;
 
-    const result: User[] = users.map((u) => ({
-      id: u.id,
-      name: u.name ?? null,
-      phone: u.phone ?? null,
-      address: u.address ?? null,
+    const result: User[] = users.map((ggez) => ({
+      id: ggez.id,
+      name: ggez.name ?? null,
+      phone: ggez.phone ?? null,
+      address: ggez.address ?? null,
     }));
 
     if (!newUserData) {
@@ -62,7 +85,7 @@ export async function addUser(
       ? result[result.length - 1].id
       : 0;
 
-    const address: Address | null | undefined = newUserData.address
+    const address: Address | null = newUserData.address
       ? {
           street: newUserData.address.street ?? null,
           suite: newUserData.address.suite ?? null,
